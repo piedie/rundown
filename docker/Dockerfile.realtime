@@ -1,0 +1,9 @@
+# syntax=docker/dockerfile:1
+
+FROM node:20-alpine
+WORKDIR /realtime
+COPY realtime/package.json realtime/package-lock.json* ./
+RUN npm ci
+COPY realtime/server.js ./server.js
+EXPOSE 3001
+CMD ["node", "server.js"]

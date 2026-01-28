@@ -1,0 +1,11 @@
+{
+  # Keep defaults boring.
+}
+
+{$APP_DOMAIN} {
+  reverse_proxy app:3000
+}
+
+{$WS_DOMAIN} {
+  reverse_proxy realtime:3001
+}

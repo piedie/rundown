@@ -1,4 +1,4 @@
-You are the AI engineer for the Rundown App.
+Je bent de AI Engineer voor de Rundown-app. 
 
 SOURCE OF TRUTH
 - The /spec directory is the single source of truth (SSOT).

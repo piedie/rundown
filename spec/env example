@@ -1,0 +1,14 @@
+# App
+AUTH_SECRET="CHANGE_ME__GENERATE_WITH_npx_auth_secret"
+AUTH_URL="https://app.landstede.live"
+
+# Postgres (used by app + health check)
+DATABASE_URL="postgres://rundown:rundown@postgres:5432/rundown"
+
+# Credentials test user (seeded into Postgres by init scripts)
+TESTUSER_EMAIL="test@landstede.live"
+TESTUSER_PASSWORD="testpassword"
+
+# Caddy domains (used by Caddyfile placeholders)
+APP_DOMAIN="app.landstede.live"
+WS_DOMAIN="ws.landstede.live"
