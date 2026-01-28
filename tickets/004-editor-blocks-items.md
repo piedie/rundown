@@ -15,6 +15,7 @@ Een rundown visueel opbouwen met blokken en items.
   - type (nog dummy)
   - duration (mm:ss)
 - Automatische total + cume berekening
+- item detailpaneel bevat twee tekstvelden: script + kladblok (kladblok kan eerst plain textarea, later rich text).
 
 ## ACCEPTATIECRITERIA
 - Items verslepen werkt soepel

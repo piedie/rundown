@@ -34,6 +34,12 @@
   - checked_by_editor (bool)
   - child_rundown_id nullable (for sub-rundown)
   - created_at, updated_at
+  - presenter_script (rich text / json)
+  - scratchpad (rich text / json of plain text)
+  - deleted_at (timestamp nullable)
+  - deleted_by (user_id nullable)
+  - origin_rundown_item_id (nullable, voor “doorzetten/kopie” lineage)
+  - items met deleted_at IS NOT NULL horen niet in normale editor query’s.
 
 ## Assets
 - assets
