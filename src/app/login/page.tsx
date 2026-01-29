@@ -23,13 +23,15 @@ export default function LoginPage() {
           const res = await signIn("credentials", {
             email,
             password,
-            redirect: true,
-            callbackUrl: "/"
+            redirect: false
           });
 
-          // If redirect happens, we won't get here. If it doesn't, show error.
-          const maybeRes = res as unknown as { error?: string } | undefined;
-if (maybeRes?.error) setError("Login mislukt");
+          if (res?.error) {
+            setError("Login mislukt");
+          } else {
+            // NextAuth types are a bit awkward when redirect=true. We keep it simple.
+            window.location.href = "/";
+          }
           setBusy(false);
         }}
       >

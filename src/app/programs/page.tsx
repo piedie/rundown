@@ -42,12 +42,17 @@ export default async function ProgramsPage() {
                     <span className="font-mono">{p.slug}</span> · rol: <span className="font-mono">{p.role}</span>
                   </div>
                 </div>
-                <Link
-                  href={`/programs/${encodeURIComponent(p.slug)}/settings/members`}
-                  className="text-sm underline"
-                >
-                  Leden
-                </Link>
+                <div className="flex items-center gap-4">
+                  <Link href={`/programs/${encodeURIComponent(p.slug)}/rundowns`} className="text-sm underline">
+                    Rundowns
+                  </Link>
+                  <Link
+                    href={`/programs/${encodeURIComponent(p.slug)}/settings/members`}
+                    className="text-sm underline"
+                  >
+                    Leden
+                  </Link>
+                </div>
               </div>
             </div>
           ))}
