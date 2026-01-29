@@ -28,7 +28,8 @@ export default function LoginPage() {
           });
 
           // If redirect happens, we won't get here. If it doesn't, show error.
-          if (res?.error) setError("Login mislukt");
+          const maybeRes = res as unknown as { error?: string } | undefined;
+if (maybeRes?.error) setError("Login mislukt");
           setBusy(false);
         }}
       >
