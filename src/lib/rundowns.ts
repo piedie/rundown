@@ -31,6 +31,19 @@ export async function listRundowns(programId: string): Promise<RundownRow[]> {
   return rows;
 }
 
+export async function getRundownById(programId: string, rundownId: string): Promise<RundownRow | null> {
+  const pool = getPool();
+  const { rows } = await pool.query<RundownRow>(
+    `
+    select id, program_id, title, date::text as date, status, checked, created_by, created_at, updated_at
+    from rundowns
+    where program_id = $1 and id = $2
+    `,
+    [programId, rundownId]
+  );
+  return rows[0] ?? null;
+}
+
 export async function createRundown(params: {
   programId: string;
   title: string;

@@ -41,7 +41,7 @@ export default async function RundownsPage({ params }: { params: { slug: string 
         </div>
       </div>
 
-      <RundownList programId={program.id} role={program.role} rundowns={rundowns} />
+      <RundownList programId={program.id} programSlug={program.slug} role={program.role} rundowns={rundowns} />
     </div>
   );
 }

@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import type { RundownRow, RundownStatus } from "@/lib/rundowns";
 import type { ProgramRole } from "@/lib/permissions";
@@ -13,6 +14,7 @@ const STATUS_OPTIONS: RundownStatus[] = ["DRAFT", "READY", "PROD", "ARCHIVED"];
 
 export function RundownList(props: {
   programId: string;
+  programSlug: string;
   role: ProgramRole;
   rundowns: RundownRow[];
 }) {
@@ -171,6 +173,12 @@ export function RundownList(props: {
 
                 {editable ? (
                   <div className="flex items-center gap-2">
+                    <Link
+                      className="rounded-md border border-zinc-300 px-3 py-2 text-sm"
+                      href={`/programs/${encodeURIComponent(props.programSlug)}/rundowns/${encodeURIComponent(r.id)}`}
+                    >
+                      Open
+                    </Link>
                     <select
                       className="rounded-md border border-zinc-300 px-2 py-1 text-sm font-mono"
                       value={r.status}
@@ -193,7 +201,14 @@ export function RundownList(props: {
                       Kopiëren
                     </button>
                   </div>
-                ) : null}
+                ) : (
+                  <Link
+                    className="rounded-md border border-zinc-300 px-3 py-2 text-sm"
+                    href={`/programs/${encodeURIComponent(props.programSlug)}/rundowns/${encodeURIComponent(r.id)}`}
+                  >
+                    Open
+                  </Link>
+                )}
               </div>
             </div>
           ))
