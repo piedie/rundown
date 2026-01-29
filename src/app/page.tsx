@@ -15,7 +15,10 @@ export default async function HomePage() {
         </div>
       </div>
 
-      <LogoutButton />
+      <div className="flex gap-3">
+        <a href="/programs" className="rounded-md border border-zinc-300 px-3 py-2 text-sm underline">Programma’s</a>
+        <LogoutButton />
+      </div>
     </div>
   );
 }

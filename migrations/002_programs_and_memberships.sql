@@ -1,6 +1,6 @@
--- 002_programs_and_memberships.sql
+-- Ticket 002: programs + program_memberships
 
--- Roles constraint via enum (Postgres native)
+-- Roles constraint via Postgres enum
 DO $$
 BEGIN
   IF NOT EXISTS (SELECT 1 FROM pg_type WHERE typname = 'program_role') THEN
@@ -9,17 +9,17 @@ BEGIN
 END$$;
 
 CREATE TABLE IF NOT EXISTS programs (
-  id            UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-  name          TEXT NOT NULL,
-  slug          TEXT NOT NULL UNIQUE,
-  created_at    TIMESTAMPTZ NOT NULL DEFAULT now()
+  id         UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  name       TEXT NOT NULL,
+  slug       TEXT NOT NULL UNIQUE,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT now()
 );
 
 CREATE TABLE IF NOT EXISTS program_memberships (
-  program_id    UUID NOT NULL REFERENCES programs(id) ON DELETE CASCADE,
-  user_id       UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
-  role          program_role NOT NULL,
-  created_at    TIMESTAMPTZ NOT NULL DEFAULT now(),
+  program_id UUID NOT NULL REFERENCES programs(id) ON DELETE CASCADE,
+  user_id    UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+  role       program_role NOT NULL,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
   PRIMARY KEY (program_id, user_id)
 );
 
