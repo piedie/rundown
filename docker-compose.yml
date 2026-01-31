@@ -22,8 +22,8 @@ services:
       MINIO_ROOT_PASSWORD: minio_password
     volumes:
       - minio_data:/data
-    ports:
-      - "9001:9001" # console (optional locally)
+  ##  ports:
+   ##   - "9001:9001" # console (optional locally)
 
   app:
     build:
