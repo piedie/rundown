@@ -1,13 +1,7 @@
-import type { NextConfig } from "next";
-
-const nextConfig: NextConfig = {
-  experimental: {}
-};
-
-export default nextConfig;
+/** @type {import('postcss-load-config').Config} */
 export default {
   plugins: {
     tailwindcss: {},
-    autoprefixer: {}
-  }
+    autoprefixer: {},
+  },
 };
