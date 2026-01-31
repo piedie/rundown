@@ -111,23 +111,29 @@ export async function updateBlock(params: {
   targetDurationSeconds?: number | null;
 }): Promise<void> {
   const pool = getPool();
+
+  // title: undefined = don't change, otherwise set (can be empty string if caller wants)
   const title = params.title ?? null;
-  const target = params.targetDurationSeconds === undefined ? null : params.targetDurationSeconds;
+
+  // target: undefined = don't change, null = clear, number = set
+  const hasTarget = params.targetDurationSeconds !== undefined;
+  const target = params.targetDurationSeconds ?? null;
 
   await pool.query(
     `
     update blocks
     set
       title = coalesce($3, title),
-      target_duration_seconds = case when $4::int is null then target_duration_seconds else $4 end,
+      target_duration_seconds = case when $4::bool then $5::int else target_duration_seconds end,
       updated_at = now()
     where id = $2 and rundown_id = $1
     `,
-    [params.rundownId, params.blockId, title, target]
+    [params.rundownId, params.blockId, title, hasTarget, target]
   );
 
   // TODO(audit): log block changes
 }
+
 
 export async function deleteBlock(params: { rundownId: string; blockId: string }): Promise<void> {
   const pool = getPool();

@@ -15,9 +15,33 @@ export async function PATCH(req: Request, ctx: { params: { programId: string; ru
     await requireProgramRole({ userId: user.id, programId: ctx.params.programId, minRole: "EDITOR" });
 
     const body = await req.json().catch(() => ({}));
-    const title = body?.title === undefined ? undefined : (body?.title ?? "").toString().trim();
 
-    await updateBlock({ rundownId: ctx.params.rundownId, blockId: ctx.params.blockId, title });
+    const title = (body as any)?.title === undefined ? undefined : ((body as any)?.title ?? "").toString().trim();
+
+    // targetDurationSeconds:
+    // - missing: don't change
+    // - null: clear
+    // - number: set
+    let targetDurationSeconds: number | null | undefined = undefined;
+    if (Object.prototype.hasOwnProperty.call(body ?? {}, "targetDurationSeconds")) {
+      const raw = (body as any).targetDurationSeconds;
+      if (raw === null) {
+        targetDurationSeconds = null;
+      } else if (typeof raw === "number" && Number.isFinite(raw)) {
+        const n = Math.max(0, Math.floor(raw));
+        targetDurationSeconds = n;
+      } else {
+        return jsonError(400, "VALIDATION_ERROR", "targetDurationSeconds must be a number or null");
+      }
+    }
+
+    await updateBlock({
+      rundownId: ctx.params.rundownId,
+      blockId: ctx.params.blockId,
+      title,
+      targetDurationSeconds,
+    });
+
     return NextResponse.json({ ok: true });
   } catch (e: any) {
     if (e?.message === "UNAUTHENTICATED") return jsonError(401, "UNAUTHENTICATED");

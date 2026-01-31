@@ -1,14 +1,13 @@
-# App
-AUTH_SECRET="CHANGE_ME__GENERATE_WITH_npx_auth_secret"
-AUTH_URL="https://app.landstede.live"
+# Example environment variables
 
-# Postgres (used by app + health check)
-DATABASE_URL="postgres://rundown:rundown@postgres:5432/rundown"
+DATABASE_URL=postgres://user:pass@localhost:5432/rundown
+MINIO_ENDPOINT=http://localhost:9000
+MINIO_ACCESS_KEY=minio
+MINIO_SECRET_KEY=miniosecret
+MINIO_BUCKET=rundown-assets
 
-# Credentials test user (seeded into Postgres by init scripts)
-TESTUSER_EMAIL="test@landstede.live"
-TESTUSER_PASSWORD="testpassword"
+WS_URL=ws://localhost:3001
+NEXT_PUBLIC_WS_URL=ws://localhost:3001
 
-# Caddy domains (used by Caddyfile placeholders)
-APP_DOMAIN="app.landstede.live"
-WS_DOMAIN="ws.landstede.live"
+NEXTAUTH_URL=http://localhost:3000
+NEXTAUTH_SECRET=changeme

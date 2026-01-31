@@ -18,18 +18,21 @@ zijn volledig onafhankelijke staten.
 Het systeem signaleert alleen (warnings), de redactie beslist.
 
 
-
 ## Should-have (na MVP, maar ontwerp alvast)
 - Sub-rundown (nieuws mini-draaiboek) + roll-up duration
 - PDF export server-side (mooier dan print)
 - Waveform + cue points (datamodel alvast)
 - “Run mode light”: current item + prev/next
 
+## Nice to have
+
+- Integraties (NRCS, playout systems, nieuwsfeeds)
+- Geavanceerde audio bewerking (fade rendering), alleen metadata
+
 ## Out of scope (MVP)
 - Mobile optimalisatie
 - Echte realtime tekstcollab (Google Docs)
-- Integraties (NRCS, playout systems, nieuwsfeeds)
-- Geavanceerde audio bewerking (fade rendering), alleen metadata
+
 
 ## Versioning
 - App gebruikt semantische versie in formaat: v0.<milestone>.<patch>

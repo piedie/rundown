@@ -136,6 +136,26 @@ export function RundownEditor(props: {
     return { total, cumeById };
   }, [flattenedForTotals]);
 
+
+  const blockTotals = useMemo(() => {
+    const map = new Map<
+      string,
+      { actualSeconds: number; targetSeconds: number | null; deltaSeconds: number | null; isOver: boolean }
+    >();
+
+    for (const block of blocksWithUnassigned) {
+      const list = itemsByBlock.get(block.id) ?? [];
+      const actualSeconds = list.reduce((sum, it) => sum + (it.duration_seconds ?? 0), 0);
+      const targetSeconds = block.target_duration_seconds ?? null;
+      const deltaSeconds = targetSeconds === null ? null : actualSeconds - targetSeconds;
+      const isOver = deltaSeconds !== null && deltaSeconds > 0;
+      map.set(block.id, { actualSeconds, targetSeconds, deltaSeconds, isOver });
+    }
+
+    return map;
+  }, [blocksWithUnassigned, itemsByBlock]);
+
+
   async function createBlockUi() {
     if (!editable) return;
     const title = window.prompt("Naam van nieuw blok:", "Blok");
@@ -189,6 +209,47 @@ export function RundownEditor(props: {
       setBusy(false);
     }
   }
+
+
+  async function editBlockTarget(blockId: string, currentTargetSeconds: number | null | undefined) {
+    if (!editable) return;
+
+    const current = currentTargetSeconds == null ? "" : formatDuration(currentTargetSeconds);
+    const value = window.prompt("Target duration (mm:ss). Leeg = verwijderen:", current);
+    if (value === null) return; // cancel
+
+    const parsed = parseDuration(value);
+    if (value.trim() !== "" && parsed === null) {
+      window.alert("Ongeldig formaat. Gebruik mm:ss (bijv. 10:00).");
+      return;
+    }
+
+    setBusy(true);
+    setError(null);
+    try {
+      const res = await fetch(
+        `/api/programs/${encodeURIComponent(props.programId)}/rundowns/${encodeURIComponent(props.rundownId)}/blocks/${encodeURIComponent(blockId)}`,
+        {
+          method: "PATCH",
+          headers: { "content-type": "application/json" },
+          body: JSON.stringify({ targetDurationSeconds: parsed })
+        }
+      );
+      if (!res.ok) throw new Error((await res.json().catch(() => null))?.error?.code ?? "UPDATE_FAILED");
+
+      // refresh blocks
+      const bRes = await fetch(
+        `/api/programs/${encodeURIComponent(props.programId)}/rundowns/${encodeURIComponent(props.rundownId)}/blocks`
+      );
+      const bJson = await bRes.json();
+      setBlocks(bJson.blocks ?? []);
+    } catch (e: any) {
+      setError(e?.message ?? "Kon target niet opslaan");
+    } finally {
+      setBusy(false);
+    }
+  }
+
 
   async function deleteBlockUi(blockId: string) {
     if (!editable) return;
@@ -428,6 +489,7 @@ export function RundownEditor(props: {
           {blocksWithUnassigned.map((block) => {
             const isUnassigned = block.id === "__unassigned__";
             const blockItems = itemsByBlock.get(block.id) ?? [];
+            const bt = blockTotals.get(block.id);
 
             return (
               <div
@@ -442,8 +504,38 @@ export function RundownEditor(props: {
                   onDropOnBlock(isUnassigned ? null : block.id);
                 }}
               >
-                <div className="flex items-center justify-between gap-2 border-b border-zinc-200 p-3">
-                  <div className="font-medium">{block.title}</div>
+                <div
+                  className={[
+                    "flex items-center justify-between gap-2 border-b p-3",
+                    bt?.isOver ? "border-red-200 bg-red-50" : "border-zinc-200"
+                  ].join(" ")}
+                >
+                  <div className="min-w-0">
+                    <div className="font-medium">{block.title}</div>
+
+                    {!isUnassigned ? (
+                      <div className="mt-1 flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-zinc-700">
+                        <span>
+                          Target:{" "}
+                          <span className="font-medium">
+                            {bt?.targetSeconds == null ? "—" : formatDuration(bt.targetSeconds)}
+                          </span>
+                        </span>
+                        <span>
+                          Actual:{" "}
+                          <span className="font-medium">{formatDuration(bt?.actualSeconds ?? 0)}</span>
+                        </span>
+                        <span>
+                          +/-:{" "}
+                          <span className={bt?.isOver ? "font-medium text-red-700" : "font-medium"}>
+                            {bt?.deltaSeconds == null ? "—" : (bt.deltaSeconds > 0 ? "+" : "") + formatDuration(Math.abs(bt.deltaSeconds))}
+                          </span>
+                        </span>
+                        {bt?.isOver ? <span className="rounded bg-red-600 px-2 py-0.5 text-white">Overrun</span> : null}
+                      </div>
+                    ) : null}
+                  </div>
+
                   <div className="flex items-center gap-2">
                     {editable ? (
                       <>

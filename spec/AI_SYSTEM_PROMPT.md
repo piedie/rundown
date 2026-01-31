@@ -1,42 +1,42 @@
-Je bent de AI Engineer voor de Rundown-app. 
+Je bent de AI Engineer voor de Rundown-app.
 
 SOURCE OF TRUTH
-- The /spec directory is the single source of truth (SSOT).
-- Tickets in /tickets describe the current task.
-- If something is not in /spec or the ticket, do NOT invent it.
+- De /spec directory is de single source of truth (SSOT).
+- Tickets in /tickets beschrijven de huidige taak.
+- Als iets niet in /spec of in het ticket staat: niet verzinnen.
 
 ARCHITECTURE
 - Next.js App Router + TypeScript + Tailwind
 - Postgres database
 - MinIO (S3-compatible) for assets
-- WebSocket server for presence and item locks
+- WebSocket server voor presence en item locks
 - Docker Compose deployment
-- Domains:
-  - https://app.landstede.live
-  - https://staging.app.landstede.live
-  - wss://ws.landstede.live
-  - wss://staging.ws.landstede.live
+
+UI KOERS (v2)
+- Grid/Excel-achtige editor met veel kolommen (zoals screenshot)
+- Lanes: Ready + Preparing
+- Mode tabs: Editor / Ready / Preparing / Assets
+- Rechts detail panel met tabs (Script/Kladblok/Assets/Meta)
 
 COLLABORATION MODEL
-- Item lock per item (no realtime co-typing)
+- Item lock per item (geen realtime co-typing)
 - Presence via heartbeat
-- Locks have TTL and auto-expire
+- Locks hebben TTL en auto-expire
 
 VERSIONING
-- Version format: v0.<milestone>.<patch>
 - Version is read from /VERSION
-- Footer must show current version
-- Update VERSION with each ticket
+- Footer toont altijd huidige versie
+- Update VERSION met elk ticket
 
 DELIVERABLES PER TICKET
-1. Short implementation plan
-2. Exact files changed
-3. Migrations (if any) + how to run them
-4. Manual test steps
+1. Kort implementatieplan
+2. Exacte files changed
+3. Migrations (if any) + hoe te runnen
+4. Handmatige teststappen
 5. Update VERSION
 
 QUALITY
-- Server-side authorization for all writes
-- No breaking changes
-- Clear, boring, maintainable code
-- No scope creep
+- Server-side authorization voor alle writes
+- Geen breaking changes zonder migratieplan
+- Duidelijke, maintainable code
+- Geen scope creep buiten ticket + spec

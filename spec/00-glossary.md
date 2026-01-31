@@ -1,48 +1,36 @@
 # Glossary
 
-## Programma (Program)
-Een categorie/show (bv. Ontbijt, Nieuws, Economie). Rechten worden per programma geregeld. 
+**Programma**  
+Container voor een redactie/uitzending. Bevat leden, item types en rundowns.
 
-## Rundown
-Een draaiboek voor een specifieke uitzending (datum/tijd) binnen één programma.
-Een rundown heeft een status (Draft/In productie/Ready/Archived) en een “checked” staat: checked = alle items groen.
+**Rundown (draaiboek)**  
+Een lijst met items (en blokken) voor één uitzending/dagdeel.
 
-## Item
-Een regel in een rundown. Items hebben een type (presentatie, jingle, clip, verslaggever, etc.), een duur, teksten/velden, en optioneel assets.
+**Blok**  
+Groepering in het draaiboek. Kan een target duration hebben (bijv. “10:00”).  
+Blokken kunnen ook “separator” of “break” zijn (voor visuele scheiding en timing).
 
-## Blok
+**Item**  
+Een regel in het draaiboek (bijv. VO, kort nieuws, live, promo, etc.).  
+Items hebben een **planned duration** (altijd handmatig) en optioneel een **actual duration** (run mode).
 
-Een functionele groepering binnen een rundown.
-Blokken hebben:
-- een titel
-- een volgorde
-- een optionele target duration
-- een eigen status-indicatie (overrun / ok)
+**Lane (Ready / Preparing)**  
+Items staan in één van twee lijsten (zoals in het screenshot):
+- **Preparing**: werkvoorraad / items die nog in voorbereiding zijn.
+- **Ready**: items die “uitzend-klaar” zijn.
 
-Blokken zijn semantisch belangrijk (bv. Nieuws, Muziek, Reclame),
-niet alleen visueel.
+**Asset Ready (klaar met assets)**  
+Een onafhankelijke checkbox per item: assets (audio/video/clip) zijn geüpload en gekoppeld.
 
+**Editor Checked (eindredactie akkoord)**  
+Een onafhankelijke checkbox per item: eindredactie heeft inhoud gecontroleerd.
 
-## Target duration
-Geplande duur op blokniveau (en optioneel op rundown-niveau later). Wordt gebruikt voor waarschuwingen.
+**Warnings**  
+Het systeem past durations nooit automatisch aan. Het systeem signaleert alleen:
+- blok over target
+- item mist script/clip/asset (configurable per item type)
+- item is nog niet “ready lane” vlak voor start (optioneel later)
 
-## Ready (item)
-Betekent: montage/asset/onderdeel is compleet. Bij uploaden van een audio asset kan item automatisch naar Ready.
-
-## Eindredactie-check (green check)
-Per item een boolean "checked_by_editor". Als alle items true → rundown.checked = true.
-
-## Sub-rundown (child rundown)
-Een item kan verwijzen naar een onderliggende rundown (bv. nieuws mini-draaiboek). De duur van het parent item is default de som van child items (roll-up), tenzij later override wordt toegevoegd.
-
-## Asset
-Bestand gekoppeld aan item of rundown: audio/video/afbeelding/pdf. In MVP: audio upload + playback.
-
-## Presence
-Zien wie er in dezelfde rundown kijkt/bewerkt.
-
-## Item lock
-Wanneer iemand item bewerkt, wordt lock gezet. Anderen zien lock en kunnen niet editen. Lock heeft TTL en heartbeat.
-
-## Taal
-In de scope en de code komt soms Engels voor, het eindresultaat is Nederlandstalig.
+**Run mode (light)**  
+Een “Start” knop zet de uitzending aan. Je kunt een “current item” markeren en
+(optioneel) actual durations vastleggen. Planned durations blijven heilig.

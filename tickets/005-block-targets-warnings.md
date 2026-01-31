@@ -1,9 +1,10 @@
 # Ticket 005 — Block target duration + overrun warnings
 
 ## CONTEXT
-Zie `/spec/00-glossary.md` en `/spec/02-data-model.md`.
+Zie `/spec/00-glossary.md` en `/spec/02-data-model.md` en `/spec/04-ui.md`
 
 ## DOEL
+Aanpassen van de UI op basis van de nieuwe specs
 Planned vs actual inzicht per blok.
 
 ## SCOPE
